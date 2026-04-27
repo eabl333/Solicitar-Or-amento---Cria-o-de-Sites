@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Orçamento - Criação de Sites</title>
+
+    <!-- ============================================================
+    CONFIGURAÇÃO PRINCIPAL
+    Altere o número de WhatsApp abaixo (código do país + número, sem +)
+    Exemplo: 5511999999999 (55 = Brasil, 11 = DDD, 999999999 = número)
+    ============================================================ -->
+    <script>
+        // ⚙️ ALTERE AQUI O NÚMERO DO WHATSAPP:
+        const WHATSAPP_NUMBER = '5511999999999';
+    </script>
+
+    <style>
+        :root {
+            /* 🎨 Paleta de cores - Edite para mudar o tema */
+            --primary: #5B4FCF;
+            --primary-dark: #4A3DB5;
+            --primary-light: #EEECFB;
+            --accent: #7C3AED;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #1DA851;
+            --bg-start: #f0f4ff;
+            --bg-end: #faf5ff;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #64748b;
+            --text-lighter: #94a3b8;
+            --border: #e2e8f0;
+            --border-focus: #5B4FCF;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px -8px rgba(91, 79, 207, 0.15), 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+            --shadow-xl: 0 25px 50px -12px rgba(91, 79, 207, 0.25);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background: linear-gradient(160deg, var(--bg-start) 0%, var(--bg-end) 50%, #fefce8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        /* ─── Decoração de fundo ─── */
+        .bg-decoration {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 12s ease-in-out infinite;
+        }
+        .bg-decoration.orb-1 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
+            top: -8%;
+            right: -6%;
+            animation-delay: 0s;
+        }
+        .bg-decoration.orb-2 {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(91, 79, 207, 0.2) 0%, transparent 70%);
+            bottom: -10%;
+            left: -5%;
+            animation-delay: -5s;
+        }
+        .bg-decoration.orb-3 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(37, 211, 102, 0.12) 0%, transparent 70%);
+            top: 40%;
+            left: 60%;
+            animation-delay: -3s;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(30px, -25px) scale(1.08);
+            }
+            50% {
+                transform: translate(-15px, 20px) scale(0.94);
+            }
+            75% {
+                transform: translate(-25px, -15px) scale(1.05);
+            }
+        }
+
+        /* ─── Container principal ─── */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 580px;
+            animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── Badge no topo ─── */
+        .top-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 50px;
+            margin-bottom: 16px;
+            letter-spacing: 0.01em;
+        }
+        .top-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--whatsapp);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* ─── Card do formulário ─── */
+        .form-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 40px 36px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            transition: box-shadow var(--transition-slow);
+            position: relative;
+        }
+        .form-card:hover {
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* ─── Cabeçalho ─── */
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .form-header .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            font-size: 26px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(91, 79, 207, 0.3);
+        }
+        .form-header h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+        .form-header .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            max-width: 380px;
+            margin: 0 auto 8px;
+        }
+        .social-proof {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0fdf4;
+            color: #166534;
+            font-weight: 600;
+            font-size: 0.82rem;
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-top: 4px;
+        }
+
+        /* ─── Grupos do formulário ─── */
+        .form-group {
+            margin-bottom: 22px;
+        }
+        .form-group:last-of-type {
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .form-label .emoji {
+            margin-right: 4px;
+        }
+
+        /* ─── Input de texto customizado ─── */
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-family: var(--font-stack);
+            color: var(--text);
+            background: #fafbfc;
+            transition: all var(--transition);
+            outline: none;
+        }
+        .input-field::placeholder {
+            color: var(--text-lighter);
+        }
+        .input-field:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+        .input-field:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px rgba(91, 79, 207, 0.08);
+            background: #fff;
+        }
+
+        /* ─── Select customizado ─── */
+        .select-wrapper {
+            position: relative;
+        }
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid var(--text-light);
+            border-bottom: 2px solid var(--text-light);
+            rotate: 45deg;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .select-wrapper:focus-within::after {
+            border-color: var(--primary);
+            rotate: -135deg;
+            top: 55%;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 40px 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-family: var(--font-stack);
+            color: var(--text);
+            background: #fafbfc;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: all var(--transition);
+            outline: none;
+        }
+        select:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+        select:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px rgba(91, 79, 207, 0.08);
+            background: #fff;
+        }
+        select:required:invalid {
+            color: var(--text-lighter);
+        }
+
+        /* ─── Checkbox cards ─── */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        @media (max-width: 440px) {
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+            .checkbox-grid.col-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 340px) {
+            .checkbox-grid.col-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .checkbox-card {
+            position: relative;
+        }
+        .checkbox-card input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+        .checkbox-card label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            background: #fafbfc;
+            transition: all var(--transition);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .checkbox-card label:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+        .checkbox-card label:active {
+            transform: scale(0.98);
+        }
+        .checkbox-card input[type="checkbox"]:checked+label {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+            box-shadow: 0 0 0 4px rgba(91, 79, 207, 0.06);
+        }
+        .checkbox-card .check-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            font-size: 11px;
+            color: transparent;
+            background: #fff;
+        }
+        .checkbox-card input[type="checkbox"]:checked+label .check-icon {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        /* ─── Radio buttons ─── */
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .radio-card {
+            position: relative;
+            flex: 1;
+            min-width: 120px;
+        }
+        .radio-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+        .radio-card label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            background: #fafbfc;
+            transition: all var(--transition);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            text-align: center;
+            justify-content: center;
+        }
+        .radio-card label:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            box-shadow: var(--shadow-sm);
+        }
+        .radio-card label:active {
+            transform: scale(0.97);
+        }
+        .radio-card input[type="radio"]:checked+label {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+            box-shadow: 0 0 0 4px rgba(91, 79, 207, 0.06);
+        }
+        .radio-card .radio-dot {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            transition: all var(--transition);
+            position: relative;
+            background: #fff;
+        }
+        .radio-card .radio-dot::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: var(--primary);
+            transform: scale(0);
+            transition: transform var(--transition);
+        }
+        .radio-card input[type="radio"]:checked+label .radio-dot {
+            border-color: var(--primary);
+        }
+        .radio-card input[type="radio"]:checked+label .radio-dot::after {
+            transform: scale(1);
+        }
+
+        /* ─── Botão Enviar ─── */
+        .btn-submit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 28px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: var(--font-stack);
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition-slow);
+            box-shadow: 0 8px 24px rgba(91, 79, 207, 0.3);
+            letter-spacing: -0.01em;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(91, 79, 207, 0.4);
+        }
+        .btn-submit:active {
+            transform: scale(0.97);
+            box-shadow: 0 4px 12px rgba(91, 79, 207, 0.3);
+            transition: all 0.1s ease;
+        }
+        .btn-submit .btn-icon {
+            font-size: 1.3rem;
+            transition: transform var(--transition);
+        }
+        .btn-submit:hover .btn-icon {
+            transform: translateX(3px) rotate(-5deg);
+        }
+
+        /* ─── Rodapé do card ─── */
+        .form-footer-note {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: var(--text-lighter);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .form-footer-note .whatsapp-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--whatsapp);
+            color: #fff;
+            font-size: 11px;
+        }
+
+        /* ─── Validação visual ─── */
+        .form-group.error select,
+        .form-group.error .input-field,
+        .form-group.error .checkbox-grid {
+            animation: shake 0.5s ease;
+        }
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-6px);
+            }
+            40% {
+                transform: translateX(6px);
+            }
+            60% {
+                transform: translateX(-4px);
+            }
+            80% {
+                transform: translateX(4px);
+            }
+        }
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.78rem;
+            font-weight: 500;
+            margin-top: 4px;
+            display: none;
+        }
+        .form-group.error .error-message {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        /* ─── Responsivo ─── */
+        @media (max-width: 600px) {
+            .form-card {
+                padding: 28px 20px;
+                border-radius: var(--radius-lg);
+            }
+            .form-header h1 {
+                font-size: 1.4rem;
+            }
+            .form-header .icon-circle {
+                width: 46px;
+                height: 46px;
+                font-size: 22px;
+            }
+            .btn-submit {
+                padding: 15px 22px;
+                font-size: 0.95rem;
+            }
+            select,
+            .input-field {
+                padding: 12px 14px;
+                font-size: 0.9rem;
+            }
+            select {
+                padding-right: 36px;
+            }
+            .checkbox-card label {
+                padding: 10px 12px;
+                font-size: 0.84rem;
+            }
+            .radio-card label {
+                padding: 12px 14px;
+                font-size: 0.84rem;
+            }
+            .social-proof {
+                font-size: 0.76rem;
+                padding: 4px 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            body {
+                padding: 10px;
+            }
+            .form-card {
+                padding: 22px 14px;
+            }
+            .form-header h1 {
+                font-size: 1.25rem;
+            }
+            .form-header .subtitle {
+                font-size: 0.85rem;
+            }
+            .checkbox-grid {
+                gap: 7px;
+            }
+            .checkbox-card label {
+                padding: 10px;
+                font-size: 0.8rem;
+                gap: 6px;
+            }
+            .radio-group {
+                gap: 8px;
+            }
+            .radio-card label {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+            .input-field {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Elementos decorativos de fundo -->
+    <div class="bg-decoration orb-1"></div>
+    <div class="bg-decoration orb-2"></div>
+    <div class="bg-decoration orb-3"></div>
+
+    <!-- Container principal -->
+    <main class="page-wrapper">
+
+        <!-- Badge superior -->
+        <div class="top-badge">
+            <span class="dot"></span>
+            Criação Profissional de Sites
+        </div>
+
+        <!-- Card do formulário -->
+        <div class="form-card" id="formCard">
+
+            <!-- Cabeçalho -->
+            <div class="form-header">
+                <div class="icon-circle">🚀</div>
+                <h1>Solicite seu orçamento</h1>
+                <p class="subtitle">Preencha o formulário abaixo e receba uma proposta personalizada via WhatsApp.</p>
+                <div class="social-proof">
+                    ⭐ +10 empresas já criaram seus sites comigo
+                </div>
+            </div>
+
+            <!-- Formulário -->
+            <form id="leadForm" novalidate>
+
+                <!-- 0. Nome do cliente -->
+                <div class="form-group" id="group-nome">
+                    <label class="form-label" for="nome">
+                        <span class="emoji">👤</span> Seu nome:
+                    </label>
+                    <input type="text" id="nome" class="input-field" placeholder="Digite seu nome completo" required>
+                    <span class="error-message">⚠️ Informe seu nome</span>
+                </div>
+
+                <!-- 1. Objetivo do site -->
+                <div class="form-group" id="group-objetivo">
+                    <label class="form-label" for="objetivo">
+                        <span class="emoji">🎯</span> Objetivo do site
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="objetivo" name="objetivo" required>
+                            <option value="" disabled selected>Selecione o objetivo principal...</option>
+                            <option value="E-commerce / Loja virtual">E-commerce / Loja virtual</option>
+                            <option value="Apresentação de serviços">Apresentação de serviços</option>
+                            <option value="Portfólio profissional">Portfólio profissional</option>
+                            <option value="Landing Page de vendas">Landing Page de vendas</option>
+                            <option value="Blog / Conteúdo">Blog / Conteúdo</option>
+                            <option value="Site institucional">Site institucional</option>
+                            <option value="Aplicação web">Aplicação web</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <span class="error-message">⚠️ Selecione o objetivo do site</span>
+                </div>
+
+                <!-- 2. Onde vende atualmente -->
+                <div class="form-group" id="group-onde-vende">
+                    <label class="form-label">
+                        <span class="emoji">📍</span> Onde você vende atualmente?
+                    </label>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-instagram" name="onde_vende" value="Instagram">
+                            <label for="vende-instagram">
+                                <span class="check-icon">✓</span> Instagram
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-facebook" name="onde_vende" value="Facebook">
+                            <label for="vende-facebook">
+                                <span class="check-icon">✓</span> Facebook
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-whatsapp" name="onde_vende" value="WhatsApp">
+                            <label for="vende-whatsapp">
+                                <span class="check-icon">✓</span> WhatsApp
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-loja-fisica" name="onde_vende" value="Loja física">
+                            <label for="vende-loja-fisica">
+                                <span class="check-icon">✓</span> Loja física
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-marketplace" name="onde_vende" value="Marketplaces">
+                            <label for="vende-marketplace">
+                                <span class="check-icon">✓</span> Marketplaces
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-site-proprio" name="onde_vende" value="Site próprio">
+                            <label for="vende-site-proprio">
+                                <span class="check-icon">✓</span> Site próprio
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="vende-nenhum" name="onde_vende" value="Ainda não vendo online">
+                            <label for="vende-nenhum">
+                                <span class="check-icon">✓</span> Ainda não vendo online
+                            </label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione pelo menos uma opção</span>
+                </div>
+
+                <!-- 3. Funcionalidades desejadas -->
+                <div class="form-group" id="group-funcionalidades">
+                    <label class="form-label">
+                        <span class="emoji">⚙️</span> Funcionalidades desejadas
+                    </label>
+                    <div class="checkbox-grid col-3">
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-loja" name="funcionalidades" value="Loja virtual / Carrinho">
+                            <label for="func-loja">
+                                <span class="check-icon">✓</span> Loja virtual
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-redes" name="funcionalidades" value="Integração redes sociais">
+                            <label for="func-redes">
+                                <span class="check-icon">✓</span> Integração redes sociais
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-chat" name="funcionalidades" value="Chat online / WhatsApp">
+                            <label for="func-chat">
+                                <span class="check-icon">✓</span> Chat / WhatsApp
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-blog" name="funcionalidades" value="Blog">
+                            <label for="func-blog">
+                                <span class="check-icon">✓</span> Blog
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-seo" name="funcionalidades" value="SEO / Aparecer no Google">
+                            <label for="func-seo">
+                                <span class="check-icon">✓</span> SEO / Google
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-painel" name="funcionalidades" value="Painel de controle">
+                            <label for="func-painel">
+                                <span class="check-icon">✓</span> Painel de controle
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-membros" name="funcionalidades" value="Área de membros">
+                            <label for="func-membros">
+                                <span class="check-icon">✓</span> Área de membros
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-formulario" name="funcionalidades" value="Formulário de contato">
+                            <label for="func-formulario">
+                                <span class="check-icon">✓</span> Formulário de contato
+                            </label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="func-pagamentos" name="funcionalidades" value="Integração pagamentos">
+                            <label for="func-pagamentos">
+                                <span class="check-icon">✓</span> Integração pagamentos
+                            </label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione pelo menos uma funcionalidade</span>
+                </div>
+
+                <!-- 4. Interesse em receber modelo -->
+                <div class="form-group" id="group-modelo">
+                    <label class="form-label">
+                        <span class="emoji">📩</span> Interesse em receber um modelo pronto?
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-card">
+                            <input type="radio" id="modelo-sim" name="interesse_modelo" value="Sim, quero receber um modelo" required>
+                            <label for="modelo-sim">
+                                <span class="radio-dot"></span> Sim, quero receber
+                            </label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="modelo-nao" name="interesse_modelo" value="Não, prefiro algo personalizado">
+                            <label for="modelo-nao">
+                                <span class="radio-dot"></span> Prefiro personalizado
+                            </label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione uma opção</span>
+                </div>
+
+                <!-- Botão Enviar -->
+                <button type="submit" class="btn-submit" id="btnSubmit">
+                    Enviar
+                    <span class="btn-icon">💬</span>
+                </button>
+            </form>
+
+            <!-- Nota do rodapé -->
+            <div class="form-footer-note">
+                <span class="whatsapp-icon">⬆</span>
+                Você será direcionado ao WhatsApp
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            // ═══════════════════════════════════════════
+            // CONFIGURAÇÃO
+            // ═══════════════════════════════════════════
+            const WHATSAPP = WHATSAPP_NUMBER; // Número definido no <script> do head
+            const FORM_ID = 'leadForm';
+            const BTN_ID = 'btnSubmit';
+
+            // ═══════════════════════════════════════════
+            // ELEMENTOS DO DOM
+            // ═══════════════════════════════════════════
+            const form = document.getElementById(FORM_ID);
+            const btnSubmit = document.getElementById(BTN_ID);
+            const inputNome = document.getElementById('nome');
+            const selectObjetivo = document.getElementById('objetivo');
+            const groupNome = document.getElementById('group-nome');
+            const groupObjetivo = document.getElementById('group-objetivo');
+            const groupOndeVende = document.getElementById('group-onde-vende');
+            const groupFuncionalidades = document.getElementById('group-funcionalidades');
+            const groupModelo = document.getElementById('group-modelo');
+
+            // ═══════════════════════════════════════════
+            // FUNÇÕES AUXILIARES
+            // ═══════════════════════════════════════════
+
+            /** Obtém valores selecionados de checkboxes por name */
+            function getCheckedValues(name) {
+                const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+                return Array.from(checkboxes).map(cb => cb.value);
+            }
+
+            /** Obtém valor do radio button selecionado por name */
+            function getRadioValue(name) {
+                const radio = document.querySelector(`input[name="${name}"]:checked`);
+                return radio ? radio.value : null;
+            }
+
+            /** Remove classe de erro de um grupo */
+            function clearError(group) {
+                if (group) group.classList.remove('error');
+            }
+
+            /** Adiciona classe de erro a um grupo */
+            function setError(group) {
+                if (group) {
+                    group.classList.add('error');
+                    // Remove o erro após a animação shake (para poder re-ativar depois)
+                    setTimeout(() => group.classList.remove('error'), 600);
+                }
+            }
+
+            /** Valida o formulário e retorna { valido, erros } */
+            function validarFormulario() {
+                const erros = [];
+                let valido = true;
+
+                // Validar nome (required, não vazio)
+                if (!inputNome.value.trim()) {
+                    erros.push('nome');
+                    setError(groupNome);
+                    valido = false;
+                } else {
+                    clearError(groupNome);
+                }
+
+                // Validar objetivo (select required)
+                if (!selectObjetivo.value) {
+                    erros.push('objetivo');
+                    setError(groupObjetivo);
+                    valido = false;
+                } else {
+                    clearError(groupObjetivo);
+                }
+
+                // Validar onde vende (pelo menos 1 checkbox)
+                const ondeVende = getCheckedValues('onde_vende');
+                if (ondeVende.length === 0) {
+                    erros.push('onde_vende');
+                    setError(groupOndeVende);
+                    valido = false;
+                } else {
+                    clearError(groupOndeVende);
+                }
+
+                // Validar funcionalidades (pelo menos 1 checkbox)
+                const funcionalidades = getCheckedValues('funcionalidades');
+                if (funcionalidades.length === 0) {
+                    erros.push('funcionalidades');
+                    setError(groupFuncionalidades);
+                    valido = false;
+                } else {
+                    clearError(groupFuncionalidades);
+                }
+
+                // Validar interesse em modelo (radio required)
+                const interesseModelo = getRadioValue('interesse_modelo');
+                if (!interesseModelo) {
+                    erros.push('modelo');
+                    setError(groupModelo);
+                    valido = false;
+                } else {
+                    clearError(groupModelo);
+                }
+
+                return { valido, erros };
+            }
+
+            /** Constrói a mensagem formatada para WhatsApp */
+            function construirMensagem() {
+                const nome = inputNome.value.trim();
+                const objetivo = selectObjetivo.value;
+                const ondeVende = getCheckedValues('onde_vende');
+                const funcionalidades = getCheckedValues('funcionalidades');
+                const interesseModelo = getRadioValue('interesse_modelo');
+
+                const ondeVendeStr = ondeVende.length > 0 ?
+                    ondeVende.join(', ') :
+                    'Não informado';
+                const funcStr = funcionalidades.length > 0 ?
+                    funcionalidades.join(', ') :
+                    'Não informado';
+
+                const mensagem =
+                    `🔥 Quero um site profissional que aumente minhas vendas!\n\n` +
+                    `👤 *Nome:* ${nome}\n` +
+                    `🎯 *Objetivo:* ${objetivo}\n` +
+                    `📍 *Onde vende:* ${ondeVendeStr}\n` +
+                    `⚙️ *Funcionalidades:* ${funcStr}\n` +
+                    `📩 *Modelo:* ${interesseModelo}\n\n` +
+                    `👋 Pode me mandar um modelo baseado nessas informações?`;
+
+                return mensagem;
+            }
+
+            /** Abre o WhatsApp com a mensagem */
+            function abrirWhatsApp(mensagem) {
+                const encoded = encodeURIComponent(mensagem);
+                const url = `https://wa.me/${WHATSAPP}?text=${encoded}`;
+                // Pequeno delay para feedback visual antes do redirect
+                setTimeout(() => {
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                }, 150);
+            }
+
+            /** Efeito de loading no botão */
+            function setButtonLoading(isLoading) {
+                if (isLoading) {
+                    btnSubmit.disabled = true;
+                    btnSubmit.style.opacity = '0.7';
+                    btnSubmit.style.pointerEvents = 'none';
+                    btnSubmit.innerHTML = 'Preparando mensagem... <span class="btn-icon">⏳</span>';
+                } else {
+                    btnSubmit.disabled = false;
+                    btnSubmit.style.opacity = '1';
+                    btnSubmit.style.pointerEvents = 'auto';
+                    btnSubmit.innerHTML = 'Enviar <span class="btn-icon">💬</span>';
+                }
+            }
+
+            // ═══════════════════════════════════════════
+            // EVENT LISTENERS
+            // ═══════════════════════════════════════════
+
+            // Limpar erros ao interagir
+            inputNome.addEventListener('input', () => clearError(groupNome));
+            selectObjetivo.addEventListener('change', () => clearError(groupObjetivo));
+
+            document.querySelectorAll('input[name="onde_vende"]').forEach(cb => {
+                cb.addEventListener('change', () => clearError(groupOndeVende));
+            });
+
+            document.querySelectorAll('input[name="funcionalidades"]').forEach(cb => {
+                cb.addEventListener('change', () => clearError(groupFuncionalidades));
+            });
+
+            document.querySelectorAll('input[name="interesse_modelo"]').forEach(radio => {
+                radio.addEventListener('change', () => clearError(groupModelo));
+            });
+
+            // Submit do formulário
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validar
+                const { valido } = validarFormulario();
+
+                if (!valido) {
+                    // Scroll suave até o primeiro erro
+                    const primeiroErro = document.querySelector('.form-group.error');
+                    if (primeiroErro) {
+                        primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // Feedback visual
+                setButtonLoading(true);
+
+                // Construir mensagem e abrir WhatsApp
+                const mensagem = construirMensagem();
+                abrirWhatsApp(mensagem);
+
+                // Resetar botão após um tempo
+                setTimeout(() => {
+                    setButtonLoading(false);
+                }, 1500);
+            });
+
+            // ═══════════════════════════════════════════
+            // LOG DE CONFIGURAÇÃO (console)
+            // ═══════════════════════════════════════════
+            console.log('✅ Formulário de captação inicializado.');
+            console.log(`📱 WhatsApp configurado: +${WHATSAPP}`);
+            console.log('💡 Dica: Altere a variável WHATSAPP_NUMBER no topo do arquivo para seu número.');
+            if (WHATSAPP === '5567996866306') {
+                console.warn('⚠️  Número de WhatsApp padrão detectado. Altere WHATSAPP_NUMBER no código!');
+            }
+        })();
+    </script>
+</body>
+</html>
