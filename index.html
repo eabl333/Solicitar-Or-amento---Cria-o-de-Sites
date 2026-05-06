@@ -8,11 +8,11 @@
     <!-- ============================================================
     CONFIGURAÇÃO PRINCIPAL
     Altere o número de WhatsApp abaixo (código do país + número, sem +)
-    Exemplo: 55 67 99686 6306 (55 = Brasil, 67 = DDD, 99686-6306 = número)
+    Exemplo: 5511999999999 (55 = Brasil, 11 = DDD, 999999999 = número)
     ============================================================ -->
     <script>
         // ⚙️ ALTERE AQUI O NÚMERO DO WHATSAPP:
-        const WHATSAPP_NUMBER = '55 67 99686 6306';
+        const WHATSAPP_NUMBER = '5511999999999';
     </script>
 
     <style>
@@ -866,6 +866,137 @@
                         </div>
                     </div>
                     <span class="error-message">⚠️ Selecione uma opção</span>
+                </div> <!-- 5. Segmento da loja -->
+                <div class="form-group" id="group-segmento">
+                    <label class="form-label" for="segmento">
+                        <span class="emoji">🏷️</span> Segmento da sua loja
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="segmento" name="segmento" required>
+                            <option value="" disabled selected>Selecione...</option>
+                            <option value="Roupas/Moda">Roupas/Moda</option>
+                            <option value="Alimentos/Bebidas">Alimentos/Bebidas</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Móveis/Decoração">Móveis/Decoração</option>
+                            <option value="Cosméticos/Perfumaria">Cosméticos/Perfumaria</option>
+                            <option value="Serviços">Serviços</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <span class="error-message">⚠️ Selecione o segmento da loja</span>
+                </div>
+                
+                <!-- 6. Quantidade de produtos -->
+                <div class="form-group" id="group-produtos">
+                    <label class="form-label">
+                        <span class="emoji">📦</span> Quantos produtos pretende cadastrar?
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-card">
+                            <input type="radio" id="prod-50" name="qtd_produtos" value="Até 50">
+                            <label for="prod-50"><span class="radio-dot"></span> Até 50</label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="prod-200" name="qtd_produtos" value="50 a 200">
+                            <label for="prod-200"><span class="radio-dot"></span> 50 a 200</label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="prod-500" name="qtd_produtos" value="200 a 500">
+                            <label for="prod-500"><span class="radio-dot"></span> 200 a 500</label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="prod-mais" name="qtd_produtos" value="Mais de 500">
+                            <label for="prod-mais"><span class="radio-dot"></span> Mais de 500</label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione uma faixa</span>
+                </div>
+                
+                <!-- 7. Conteúdo dos produtos -->
+                <div class="form-group" id="group-conteudo">
+                    <label class="form-label">
+                        <span class="emoji">🖼️</span> Fotos e descrições dos produtos
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-card">
+                            <input type="radio" id="conteudo-pronto" name="conteudo_produto" value="Sim, tudo pronto">
+                            <label for="conteudo-pronto"><span class="radio-dot"></span> Sim, tudo pronto</label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="conteudo-fotos" name="conteudo_produto" value="Tenho apenas fotos">
+                            <label for="conteudo-fotos"><span class="radio-dot"></span> Tenho apenas fotos</label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="conteudo-ajuda" name="conteudo_produto" value="Preciso de ajuda com textos e fotos">
+                            <label for="conteudo-ajuda"><span class="radio-dot"></span> Preciso de ajuda com textos/fotos</label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione uma opção</span>
+                </div>
+                
+                <!-- 8. Plataforma de pagamento -->
+                <div class="form-group" id="group-pagamento">
+                    <label class="form-label">
+                        <span class="emoji">💳</span> Plataforma de pagamento desejada
+                    </label>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="pag-mercado" name="plataforma_pagamento" value="Mercado Pago">
+                            <label for="pag-mercado"><span class="check-icon">✓</span> Mercado Pago</label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="pag-stripe" name="plataforma_pagamento" value="Stripe">
+                            <label for="pag-stripe"><span class="check-icon">✓</span> Stripe</label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="pag-pagseguro" name="plataforma_pagamento" value="PagSeguro">
+                            <label for="pag-pagseguro"><span class="check-icon">✓</span> PagSeguro</label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="pag-paypal" name="plataforma_pagamento" value="PayPal">
+                            <label for="pag-paypal"><span class="check-icon">✓</span> PayPal</label>
+                        </div>
+                        <div class="checkbox-card">
+                            <input type="checkbox" id="pag-naosei" name="plataforma_pagamento" value="Ainda não sei">
+                            <label for="pag-naosei"><span class="check-icon">✓</span> Ainda não sei</label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione pelo menos uma</span>
+                </div>
+                
+                <!-- 9. Domínio e hospedagem -->
+                <div class="form-group" id="group-dominio">
+                    <label class="form-label">
+                        <span class="emoji">🌐</span> Você já tem domínio e hospedagem?
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-card">
+                            <input type="radio" id="dom-sim" name="dominio_hospedagem" value="Sim, já tenho">
+                            <label for="dom-sim"><span class="radio-dot"></span> Sim, já tenho</label>
+                        </div>
+                        <div class="radio-card">
+                            <input type="radio" id="dom-nao" name="dominio_hospedagem" value="Não, preciso contratar">
+                            <label for="dom-nao"><span class="radio-dot"></span> Não, preciso contratar</label>
+                        </div>
+                    </div>
+                    <span class="error-message">⚠️ Selecione uma opção</span>
+                </div>
+                
+                <!-- 10. Prazo desejado -->
+                <div class="form-group" id="group-prazo">
+                    <label class="form-label" for="prazo">
+                        <span class="emoji">⏱️</span> Prazo desejado para o site ficar pronto
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="prazo" name="prazo" required>
+                            <option value="" disabled selected>Selecione o prazo...</option>
+                            <option value="Até 15 dias">Até 5 dias</option>
+                            <option value="1 mês">10 dias </option>
+                            <option value="2 meses">20 dias</option>
+                            <option value="Flexível">Flexível</option>
+                        </select>
+                    </div>
+                    <span class="error-message">⚠️ Selecione o prazo</span>
                 </div>
 
                 <!-- Botão Enviar -->
@@ -1069,6 +1200,11 @@
 
                 // Validar
                 const { valido } = validarFormulario();
+                if (!document.getElementById('segmento').value) {
+    erros.push('segmento');
+    setError(groupSegmento);
+    valido = false;
+} else { clearError(groupSegmento); }
 
                 if (!valido) {
                     // Scroll suave até o primeiro erro
@@ -1085,6 +1221,25 @@
                 // Construir mensagem e abrir WhatsApp
                 const mensagem = construirMensagem();
                 abrirWhatsApp(mensagem);
+                // Dentro da função construirMensagem()
+const segmento = document.getElementById('segmento').value;
+const qtdProdutos = getRadioValue('qtd_produtos');
+const conteudoProduto = getRadioValue('conteudo_produto');
+const pagamentos = getCheckedValues('plataforma_pagamento');
+const dominio = getRadioValue('dominio_hospedagem');
+const prazo = document.getElementById('prazo').value;
+
+// Formatar strings
+const pagamentosStr = pagamentos.length ? pagamentos.join(', ') : 'Não informado';
+
+// Adicione essas linhas na mensagem final
+`🏷️ *Segmento:* ${segmento}\n` +
+`📦 *Quantidade de produtos:* ${qtdProdutos || 'Não informado'}\n` +
+`🖼️ *Conteúdo dos produtos:* ${conteudoProduto || 'Não informado'}\n` +
+`💳 *Plataforma de pagamento:* ${pagamentosStr}\n` +
+`🌐 *Domínio/hospedagem:* ${dominio || 'Não informado'}\n` +
+`⏱️ *Prazo desejado:* ${prazo}\n` +
+                
 
                 // Resetar botão após um tempo
                 setTimeout(() => {
