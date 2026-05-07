@@ -1021,21 +1021,30 @@
             // ═══════════════════════════════════════════
             const WHATSAPP = WHATSAPP_NUMBER; // Número definido no <script> do head
             const FORM_ID = 'leadForm';
-            const BTN_ID = 'btnSubmit';
+            const BTN_ID = 'btnSubmit'; 
 
             // ═══════════════════════════════════════════
-            // ELEMENTOS DO DOM
-            // ═══════════════════════════════════════════
-            const form = document.getElementById(FORM_ID);
-            const btnSubmit = document.getElementById(BTN_ID);
-            const inputNome = document.getElementById('nome');
-            const selectObjetivo = document.getElementById('objetivo');
-            const groupNome = document.getElementById('group-nome');
-            const groupObjetivo = document.getElementById('group-objetivo');
-            const groupOndeVende = document.getElementById('group-onde-vende');
-            const groupFuncionalidades = document.getElementById('group-funcionalidades');
-            const groupModelo = document.getElementById('group-modelo');
+// ELEMENTOS DO DOM
+// ═══════════════════════════════════════════
+const form = document.getElementById(FORM_ID);
+const btnSubmit = document.getElementById(BTN_ID);
+const inputNome = document.getElementById('nome');
+const selectObjetivo = document.getElementById('objetivo');
+const groupNome = document.getElementById('group-nome');
+const groupObjetivo = document.getElementById('group-objetivo');
+const groupOndeVende = document.getElementById('group-onde-vende');
+const groupFuncionalidades = document.getElementById('group-funcionalidades');
+const groupModelo = document.getElementById('group-modelo');
 
+// NOVOS ELEMENTOS
+const groupSegmento = document.getElementById('group-segmento');
+const groupProdutos = document.getElementById('group-produtos');
+const groupConteudo = document.getElementById('group-conteudo');
+const groupPagamento = document.getElementById('group-pagamento');
+const groupDominio = document.getElementById('group-dominio');
+const groupPrazo = document.getElementById('group-prazo');
+
+            
             // ═══════════════════════════════════════════
             // FUNÇÕES AUXILIARES
             // ═══════════════════════════════════════════
@@ -1066,88 +1075,153 @@
                 }
             }
 
-            /** Valida o formulário e retorna { valido, erros } */
             function validarFormulario() {
-                const erros = [];
-                let valido = true;
+    const erros = [];
+    let valido = true;
 
-                // Validar nome (required, não vazio)
-                if (!inputNome.value.trim()) {
-                    erros.push('nome');
-                    setError(groupNome);
-                    valido = false;
-                } else {
-                    clearError(groupNome);
-                }
+    // Validar nome
+    if (!inputNome.value.trim()) {
+        erros.push('nome');
+        setError(groupNome);
+        valido = false;
+    } else {
+        clearError(groupNome);
+    }
 
-                // Validar objetivo (select required)
-                if (!selectObjetivo.value) {
-                    erros.push('objetivo');
-                    setError(groupObjetivo);
-                    valido = false;
-                } else {
-                    clearError(groupObjetivo);
-                }
+    // Validar objetivo
+    if (!selectObjetivo.value) {
+        erros.push('objetivo');
+        setError(groupObjetivo);
+        valido = false;
+    } else {
+        clearError(groupObjetivo);
+    }
 
-                // Validar onde vende (pelo menos 1 checkbox)
-                const ondeVende = getCheckedValues('onde_vende');
-                if (ondeVende.length === 0) {
-                    erros.push('onde_vende');
-                    setError(groupOndeVende);
-                    valido = false;
-                } else {
-                    clearError(groupOndeVende);
-                }
+    // Validar onde vende
+    const ondeVende = getCheckedValues('onde_vende');
+    if (ondeVende.length === 0) {
+        erros.push('onde_vende');
+        setError(groupOndeVende);
+        valido = false;
+    } else {
+        clearError(groupOndeVende);
+    }
 
-                // Validar funcionalidades (pelo menos 1 checkbox)
-                const funcionalidades = getCheckedValues('funcionalidades');
-                if (funcionalidades.length === 0) {
-                    erros.push('funcionalidades');
-                    setError(groupFuncionalidades);
-                    valido = false;
-                } else {
-                    clearError(groupFuncionalidades);
-                }
+    // Validar funcionalidades
+    const funcionalidades = getCheckedValues('funcionalidades');
+    if (funcionalidades.length === 0) {
+        erros.push('funcionalidades');
+        setError(groupFuncionalidades);
+        valido = false;
+    } else {
+        clearError(groupFuncionalidades);
+    }
 
-                // Validar interesse em modelo (radio required)
-                const interesseModelo = getRadioValue('interesse_modelo');
-                if (!interesseModelo) {
-                    erros.push('modelo');
-                    setError(groupModelo);
-                    valido = false;
-                } else {
-                    clearError(groupModelo);
-                }
+    // Validar interesse em modelo
+    const interesseModelo = getRadioValue('interesse_modelo');
+    if (!interesseModelo) {
+        erros.push('modelo');
+        setError(groupModelo);
+        valido = false;
+    } else {
+        clearError(groupModelo);
+    }
 
-                return { valido, erros };
-            }
+    // VALIDAÇÕES DOS NOVOS CAMPOS
+    const segmento = document.getElementById('segmento').value;
+    if (!segmento) {
+        erros.push('segmento');
+        setError(groupSegmento);
+        valido = false;
+    } else {
+        clearError(groupSegmento);
+    }
 
-            /** Constrói a mensagem formatada para WhatsApp */
-            function construirMensagem() {
-                const nome = inputNome.value.trim();
-                const objetivo = selectObjetivo.value;
-                const ondeVende = getCheckedValues('onde_vende');
-                const funcionalidades = getCheckedValues('funcionalidades');
-                const interesseModelo = getRadioValue('interesse_modelo');
+    const qtdProdutos = getRadioValue('qtd_produtos');
+    if (!qtdProdutos) {
+        erros.push('produtos');
+        setError(groupProdutos);
+        valido = false;
+    } else {
+        clearError(groupProdutos);
+    }
 
-                const ondeVendeStr = ondeVende.length > 0 ?
-                    ondeVende.join(', ') :
-                    'Não informado';
-                const funcStr = funcionalidades.length > 0 ?
-                    funcionalidades.join(', ') :
-                    'Não informado';
+    const conteudoProduto = getRadioValue('conteudo_produto');
+    if (!conteudoProduto) {
+        erros.push('conteudo');
+        setError(groupConteudo);
+        valido = false;
+    } else {
+        clearError(groupConteudo);
+    }
 
-                const mensagem =
-                    `🔥 Quero um site profissional que aumente minhas vendas!\n\n` +
-                    `👤 *Nome:* ${nome}\n` +
-                    `🎯 *Objetivo:* ${objetivo}\n` +
-                    `📍 *Onde vende:* ${ondeVendeStr}\n` +
-                    `⚙️ *Funcionalidades:* ${funcStr}\n` +
-                    `📩 *Modelo:* ${interesseModelo}\n\n` +
-                    `👋 Pode me mandar um modelo baseado nessas informações?`;
+    const pagamentos = getCheckedValues('plataforma_pagamento');
+    if (pagamentos.length === 0) {
+        erros.push('pagamento');
+        setError(groupPagamento);
+        valido = false;
+    } else {
+        clearError(groupPagamento);
+    }
 
-                return mensagem;
-            }
+    const dominio = getRadioValue('dominio_hospedagem');
+    if (!dominio) {
+        erros.push('dominio');
+        setError(groupDominio);
+        valido = false;
+    } else {
+        clearError(groupDominio);
+    }
+
+    const prazo = document.getElementById('prazo').value;
+    if (!prazo) {
+        erros.push('prazo');
+        setError(groupPrazo);
+        valido = false;
+    } else {
+        clearError(groupPrazo);
+    }
+
+    return { valido, erros };
+}
+
+function construirMensagem() {
+    const nome = inputNome.value.trim();
+    const objetivo = selectObjetivo.value;
+    const ondeVende = getCheckedValues('onde_vende');
+    const funcionalidades = getCheckedValues('funcionalidades');
+    const interesseModelo = getRadioValue('interesse_modelo');
+    
+    // NOVOS CAMPOS
+    const segmento = document.getElementById('segmento').value;
+    const qtdProdutos = getRadioValue('qtd_produtos');
+    const conteudoProduto = getRadioValue('conteudo_produto');
+    const pagamentos = getCheckedValues('plataforma_pagamento');
+    const dominio = getRadioValue('dominio_hospedagem');
+    const prazo = document.getElementById('prazo').value;
+
+    const ondeVendeStr = ondeVende.length > 0 ? ondeVende.join(', ') : 'Não informado';
+    const funcStr = funcionalidades.length > 0 ? funcionalidades.join(', ') : 'Não informado';
+    const pagamentosStr = pagamentos.length ? pagamentos.join(', ') : 'Não informado';
+
+    const mensagem =
+        `🔥 *NOVO PEDIDO DE ORÇAMENTO* 🔥\n\n` +
+        `👤 *Nome:* ${nome}\n` +
+        `🎯 *Objetivo:* ${objetivo}\n` +
+        `📍 *Onde vende:* ${ondeVendeStr}\n` +
+        `⚙️ *Funcionalidades:* ${funcStr}\n` +
+        `📩 *Modelo:* ${interesseModelo}\n` +
+        `🏷️ *Segmento:* ${segmento}\n` +
+        `📦 *Quantidade de produtos:* ${qtdProdutos || 'Não informado'}\n` +
+        `🖼️ *Conteúdo dos produtos:* ${conteudoProduto || 'Não informado'}\n` +
+        `💳 *Plataforma de pagamento:* ${pagamentosStr}\n` +
+        `🌐 *Domínio/hospedagem:* ${dominio || 'Não informado'}\n` +
+        `⏱️ *Prazo desejado:* ${prazo}\n\n` +
+        `👋 Gostaria de receber uma proposta personalizada!`;
+
+    return mensagem;
+}
+
 
             /** Abre o WhatsApp com a mensagem */
             function abrirWhatsApp(mensagem) {
@@ -1178,21 +1252,22 @@
             // EVENT LISTENERS
             // ═══════════════════════════════════════════
 
-            // Limpar erros ao interagir
-            inputNome.addEventListener('input', () => clearError(groupNome));
-            selectObjetivo.addEventListener('change', () => clearError(groupObjetivo));
+            // Limpar erros dos NOVOS campos ao interagir
+document.getElementById('segmento')?.addEventListener('change', () => clearError(groupSegmento));
+document.querySelectorAll('input[name="qtd_produtos"]').forEach(radio => {
+    radio.addEventListener('change', () => clearError(groupProdutos));
+});
+document.querySelectorAll('input[name="conteudo_produto"]').forEach(radio => {
+    radio.addEventListener('change', () => clearError(groupConteudo));
+});
+document.querySelectorAll('input[name="plataforma_pagamento"]').forEach(cb => {
+    cb.addEventListener('change', () => clearError(groupPagamento));
+});
+document.querySelectorAll('input[name="dominio_hospedagem"]').forEach(radio => {
+    radio.addEventListener('change', () => clearError(groupDominio));
+});
+document.getElementById('prazo')?.addEventListener('change', () => clearError(groupPrazo));
 
-            document.querySelectorAll('input[name="onde_vende"]').forEach(cb => {
-                cb.addEventListener('change', () => clearError(groupOndeVende));
-            });
-
-            document.querySelectorAll('input[name="funcionalidades"]').forEach(cb => {
-                cb.addEventListener('change', () => clearError(groupFuncionalidades));
-            });
-
-            document.querySelectorAll('input[name="interesse_modelo"]').forEach(radio => {
-                radio.addEventListener('change', () => clearError(groupModelo));
-            });
 
             // Submit do formulário
             form.addEventListener('submit', function(e) {
